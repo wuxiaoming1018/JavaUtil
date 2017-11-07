@@ -29,7 +29,8 @@ public class ReversePolishImpl {
 //        }
 //        toPolishDate("3+5*2-(8-3)*2/4");
 //        toPolishDate("8-2*3+(8-2)*5/6");
-        String resultData = beforeData("-3+(2-5)*6/3");
+        String resultData = beforeData("-3+(-12-5)*6/3");
+//        String resultData = beforeData("1+((2+3)*4)-5");
         toPolishDate(resultData);
     }
 
@@ -37,14 +38,20 @@ public class ReversePolishImpl {
      * 解决出现负数情况
      * -出现在最前面或者出现在左括号后面，则表示该数字为负数，在-前面加0
      * -5-(-8-1)会处理成 0-5-(0-8-1)
+     *
      * @param before
      * @return
      */
     private String beforeData(String before) {
         StringBuffer sb = new StringBuffer(before);
-        for (int i = 0; i < sb.length(); i++) {
-            char c = sb.charAt(i);
-            if (OPERATOR.indexOf(c) >= 0) {
+        char be, af;
+        if (sb.charAt(0) == '-') {
+            sb.insert(0, '0');
+        }
+        for (int i = 0; i < sb.length() - 1; i++) {
+            be = sb.charAt(i);
+            af = sb.charAt(i + 1);
+            /*if (OPERATOR.indexOf(c) >= 0) {
                 if (i == 0) {
                     sb.insert(0, '0');
                     i++;
@@ -52,6 +59,9 @@ public class ReversePolishImpl {
                     sb.insert(i, '0');
                     i++;
                 }
+            }*/
+            if (be == '(' && af == '-') {
+                sb.insert(i + 1, '0');
             }
         }
         return sb.toString();
@@ -66,12 +76,17 @@ public class ReversePolishImpl {
         char c;
         hasLeft = input.charAt(0) == '(';
         boolean isAdd = true;
+        StringBuffer sb = new StringBuffer();
         for (int i = 0; i < length; i++) {
             c = input.charAt(i);
             if (Character.isDigit(c)) {
                 intStack.push(Integer.valueOf(c));
-                resultStack.push(c);
+                sb.append(c);
             } else {
+                if (sb.length() > 0) {
+                    resultStack.push(sb.toString());
+                    sb = new StringBuffer();
+                }
                 if (charStack.isEmpty()) {
                     charStack.push(c);
                 } else {

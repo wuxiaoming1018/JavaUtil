@@ -195,7 +195,7 @@ public class Calculator {
 //        }
         double result = 0;
         try {
-            result = Calculator2("-3+(10-5)*16/8");
+            result = Calculator2("-3+(-12-5)*6/3");
         } catch (Exception e) {
             e.printStackTrace();
         }
