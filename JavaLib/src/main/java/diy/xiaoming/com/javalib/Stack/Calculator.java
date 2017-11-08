@@ -195,10 +195,10 @@ public class Calculator {
 //        }
         double result = 0;
         try {
-            result = Calculator2("-3+(-12-5+10*2-8)*6/3");
+            result = Calculator2("1+((2+3)*4)-5");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(result + "");
+        System.out.println("result =" + result);
     }
 }

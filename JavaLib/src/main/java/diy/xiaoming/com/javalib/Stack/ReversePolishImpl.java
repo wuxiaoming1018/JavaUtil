@@ -9,7 +9,6 @@ import java.util.Stack;
 
 public class ReversePolishImpl {
 
-    private String CLOSE_MARK = "bye";
     private boolean hasLeft = false;
     private Stack<Character> charStack = new Stack<>();
     private Stack<Object> resultStack = new Stack<>();
@@ -17,21 +16,8 @@ public class ReversePolishImpl {
     private String operator = "+-*/()";
     private int count = 1;
 
-    public void init() {
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println("请输入运算表达式");
-//        String input = scanner.nextLine();
-//        while (input.length() != 0 && !CLOSE_MARK.equals(input)) {
-//            System.out.println("波兰表达式:");
-//            toPolishDate(input);
-//            System.out.println("逆波兰表达式:");
-//            roReversePolish(input);
-//        }
-//        toPolishDate("3+5*2-(8-3)*2/4");
-//        toPolishDate("8-2*3+(8-2)*5/6");
+    public void main(String[] args){
         String resultData = beforeData("-3+(-12-5+10*2-8)*6/3");
-//        String resultData = beforeData("1+((2+3)*4)-5");
-//        String resultData = beforeData("8-2*3+(89-2)*5/6");
         System.out.println("中缀表达式:" + resultData);
         toPolishDate(resultData);
     }
@@ -44,7 +30,7 @@ public class ReversePolishImpl {
      * @param before
      * @return
      */
-    private String beforeData(String before) {
+    private static String beforeData(String before) {
         StringBuffer sb = new StringBuffer(before);
         char be, af;
         if (sb.charAt(0) == '-') {
@@ -92,9 +78,8 @@ public class ReversePolishImpl {
                     }
                     if (isComplete) {
                         //出现一个完整的括号
-                        while (/*isAdd &&*/ charStack.peek() != '(') {
+                        while (charStack.peek() != '(') {
                             resultStack.push(charStack.pop());
-//                            isAdd = !charStack.isEmpty();
                         }
                         charStack.pop();//去掉符号栈里面的'('
                         isComplete = false;
@@ -120,6 +105,13 @@ public class ReversePolishImpl {
         for (int i = 0; i < resultStack.size(); i++) {
             System.out.print(resultStack.get(i) + " ");
         }
+        System.out.println();
+        try {
+            double result = calculator(resultStack);
+            System.out.println("运算结果为:" + result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -136,8 +128,7 @@ public class ReversePolishImpl {
                 if (count > 1) {
                     //当括号里面的运算符大于一个的时候
                     hasLeft = false;
-                    return priorityCompare(a,b);
-//                    return true;
+                    return priorityCompare(a, b);
                 } else {
                     count++;
                     return false;
@@ -173,6 +164,42 @@ public class ReversePolishImpl {
             }
         }
         return false;
+    }
+
+    private double calculator(Stack<Object> resultStack) throws Exception {
+        Stack<Double> data = new Stack<>();
+        Double number1, number2, temp;
+        for (int i = 0; i < resultStack.size(); i++) {
+            String object = String.valueOf(resultStack.get(i)) ;
+            if (operator.indexOf(object) >= 0) {
+                number2 = data.pop();
+                number1 = data.pop();
+                switch (object) {
+                    case "+":
+                        temp = number1 + number2;
+                        break;
+                    case "-":
+                        temp = number1 - number2;
+                        break;
+                    case "*":
+                        temp = number1 * number2;
+                        break;
+                    case "/":
+                        if (number2 == 0) {
+                            throw new RuntimeException("被除数不能为零");
+                        } else {
+                            temp = number1 / number2;
+                        }
+                        break;
+                    default:
+                        throw new Exception("运算符号:" + object + "未识别");
+                }
+                data.push(temp);
+            } else {
+                data.push(Double.parseDouble(object));
+            }
+        }
+        return data.peek();
     }
 
 }
