@@ -9,14 +9,14 @@ import java.util.Stack;
 
 public class ReversePolishImpl {
 
-    private boolean hasLeft = false;
-    private Stack<Character> charStack = new Stack<>();
-    private Stack<Object> resultStack = new Stack<>();
-    private boolean isComplete;//是否是一个完整的括号
-    private String operator = "+-*/()";
-    private int count = 1;
+    private static boolean hasLeft = false;
+    private static Stack<Character> charStack = new Stack<>();
+    private static Stack<Object> resultStack = new Stack<>();
+    private static boolean isComplete;//是否是一个完整的括号
+    private static String operator = "+-*/()";
+    private static int count = 1;
 
-    public void main(String[] args){
+    public static void main(String[] args){
         String resultData = beforeData("-3+(-12-5+10*2-8)*6/3");
         System.out.println("中缀表达式:" + resultData);
         toPolishDate(resultData);
@@ -46,7 +46,7 @@ public class ReversePolishImpl {
         return sb.toString();
     }
 
-    private void toPolishDate(String input) {
+    private static void toPolishDate(String input) {
         int length = input.length();
         char c;
         hasLeft = input.charAt(0) == '(';
@@ -95,7 +95,6 @@ public class ReversePolishImpl {
                 return;
             }
         }
-        System.out.println("charStack: " + charStack);
         while (!charStack.isEmpty()) {
             //最后把符号栈里面的元素依次弹出
             resultStack.push(charStack.pop());
@@ -122,7 +121,7 @@ public class ReversePolishImpl {
      * @param b 需要对比的运算符
      * @return true :栈顶运算符弹出  false ：b入符号栈
      */
-    private boolean priorityCompare(char a, char b) {
+    private static boolean priorityCompare(char a, char b) {
         if (hasLeft) {
             if (b != ')') {
                 if (count > 1) {
@@ -166,7 +165,7 @@ public class ReversePolishImpl {
         return false;
     }
 
-    private double calculator(Stack<Object> resultStack) throws Exception {
+    private static double calculator(Stack<Object> resultStack) throws Exception {
         Stack<Double> data = new Stack<>();
         Double number1, number2, temp;
         for (int i = 0; i < resultStack.size(); i++) {
@@ -199,7 +198,7 @@ public class ReversePolishImpl {
                 data.push(Double.parseDouble(object));
             }
         }
-        return data.peek();
+        return data.pop();
     }
 
 }
