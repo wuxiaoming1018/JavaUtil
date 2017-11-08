@@ -3,7 +3,7 @@ package diy.xiaoming.com.javalib.Stack;
 import java.util.Stack;
 
 /**
- * æ™®é€šå››åˆ™è¿ç®—æ¯”æ³¢å…°è¡¨è¾¾å¼å®ç°
+ * ÆÕÍ¨ËÄÔòÔËËã±È²¨À¼±í´ïÊ½ÊµÏÖ
  * Created by Administrator on 2017-11-07.
  */
 
@@ -12,32 +12,33 @@ public class ReversePolishImpl {
     private String CLOSE_MARK = "bye";
     private boolean hasLeft = false;
     private Stack<Character> charStack = new Stack<>();
-    private Stack<Integer> intStack = new Stack<>();
     private Stack<Object> resultStack = new Stack<>();
-    private boolean isComplete;//æ˜¯å¦æ˜¯ä¸€ä¸ªå®Œæ•´çš„æ‹¬å·
-    private static String OPERATOR = "+-*/%^()";
+    private boolean isComplete;//ÊÇ·ñÊÇÒ»¸öÍêÕûµÄÀ¨ºÅ
+    private String operator = "+-*/()";
 
     public void init() {
 //        Scanner scanner = new Scanner(System.in);
-//        System.out.println("è¯·è¾“å…¥è¿ç®—è¡¨è¾¾å¼");
+//        System.out.println("ÇëÊäÈëÔËËã±í´ïÊ½");
 //        String input = scanner.nextLine();
 //        while (input.length() != 0 && !CLOSE_MARK.equals(input)) {
-//            System.out.println("æ³¢å…°è¡¨è¾¾å¼:");
+//            System.out.println("²¨À¼±í´ïÊ½:");
 //            toPolishDate(input);
-//            System.out.println("é€†æ³¢å…°è¡¨è¾¾å¼:");
+//            System.out.println("Äæ²¨À¼±í´ïÊ½:");
 //            roReversePolish(input);
 //        }
 //        toPolishDate("3+5*2-(8-3)*2/4");
 //        toPolishDate("8-2*3+(8-2)*5/6");
-        String resultData = beforeData("-3+(-12-5)*6/3");
+//        String resultData = beforeData("-3+(-12-5)*6/3");
 //        String resultData = beforeData("1+((2+3)*4)-5");
+        String resultData = beforeData("8-2*3+(89-2)*5/6");
+        System.out.println("ÖĞ×º±í´ïÊ½:" + resultData);
         toPolishDate(resultData);
     }
 
     /**
-     * è§£å†³å‡ºç°è´Ÿæ•°æƒ…å†µ
-     * -å‡ºç°åœ¨æœ€å‰é¢æˆ–è€…å‡ºç°åœ¨å·¦æ‹¬å·åé¢ï¼Œåˆ™è¡¨ç¤ºè¯¥æ•°å­—ä¸ºè´Ÿæ•°ï¼Œåœ¨-å‰é¢åŠ 0
-     * -5-(-8-1)ä¼šå¤„ç†æˆ 0-5-(0-8-1)
+     * ½â¾ö³öÏÖ¸ºÊıÇé¿ö
+     * -³öÏÖÔÚ×îÇ°Ãæ»òÕß³öÏÖÔÚ×óÀ¨ºÅºóÃæ£¬Ôò±íÊ¾¸ÃÊı×ÖÎª¸ºÊı£¬ÔÚ-Ç°Ãæ¼Ó0
+     * -5-(-8-1)»á´¦Àí³É 0-5-(0-8-1)
      *
      * @param before
      * @return
@@ -51,24 +52,11 @@ public class ReversePolishImpl {
         for (int i = 0; i < sb.length() - 1; i++) {
             be = sb.charAt(i);
             af = sb.charAt(i + 1);
-            /*if (OPERATOR.indexOf(c) >= 0) {
-                if (i == 0) {
-                    sb.insert(0, '0');
-                    i++;
-                } else if (sb.charAt(i - 1) == '(') {
-                    sb.insert(i, '0');
-                    i++;
-                }
-            }*/
             if (be == '(' && af == '-') {
                 sb.insert(i + 1, '0');
             }
         }
         return sb.toString();
-    }
-
-    private void roReversePolish(String input) {
-
     }
 
     private void toPolishDate(String input) {
@@ -79,12 +67,17 @@ public class ReversePolishImpl {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < length; i++) {
             c = input.charAt(i);
-            if (Character.isDigit(c)) {
-                intStack.push(Integer.valueOf(c));
-                sb.append(c);
-            } else {
+            if (Character.isDigit(c) || c == '.') {
+                if (i == length - 1) {
+                    //×îºóÒÔÎª×Ö·ûÎ»Êı×ÖµÄÇé¿ö
+                    resultStack.push(c);
+                    sb.reverse();
+                } else {
+                    sb.append(c);
+                }
+            } else if (operator.indexOf(c) > 0) {
                 if (sb.length() > 0) {
-                    resultStack.push(sb.toString());
+                    resultStack.push(sb.toString());//½â¾ö·ÇÕûÊıºÍ¶àÎ»ÊıÎÊÌâ
                     sb = new StringBuffer();
                 }
                 if (charStack.isEmpty()) {
@@ -92,38 +85,45 @@ public class ReversePolishImpl {
                 } else {
                     if (!charStack.isEmpty()) {
                         while (isAdd && priorityCompare(charStack.peek(), c)) {
-                            resultStack.push(charStack.pop());//pop()è·å–æ ˆé¡¶å…ƒç´ å¹¶åˆ é™¤
+                            resultStack.push(charStack.pop());//pop()»ñÈ¡Õ»¶¥ÔªËØ²¢É¾³ı
                             isAdd = !charStack.isEmpty();
                         }
                     }
                     if (isComplete) {
-                        //å‡ºç°ä¸€ä¸ªå®Œæ•´çš„æ‹¬å·
+                        //³öÏÖÒ»¸öÍêÕûµÄÀ¨ºÅ
                         while (isAdd && charStack.peek() != '(') {
                             resultStack.push(charStack.pop());
                         }
-                        charStack.pop();//å»æ‰ç¬¦å·æ ˆé‡Œé¢çš„'('
+                        charStack.pop();//È¥µô·ûºÅÕ»ÀïÃæµÄ'('
                         isComplete = false;
                     } else {
                         charStack.push(c);
                     }
                     isAdd = !charStack.isEmpty();
                 }
+            } else {
+                System.out.println("ÊäÈëµÄ×Ö·û²»·ûºÏÒªÇó");
             }
         }
         System.out.println("charStack: " + charStack);
         while (!charStack.isEmpty()) {
+            //×îºó°Ñ·ûºÅÕ»ÀïÃæµÄÔªËØÒÀ´Îµ¯³ö
             resultStack.push(charStack.pop());
         }
         System.out.println("resultStack: " + resultStack);
+        System.out.print("ºó×º±í´ïÊ½:");
+        for (int i = 0; i < resultStack.size(); i++) {
+            System.out.print(resultStack.get(i) + " ");
+        }
     }
 
     /**
-     * ä¼˜å…ˆçº§åˆ«å¯¹æ¯” ï¼ˆå½“aè¿ç®—ç¬¦ä¼˜å…ˆçº§åˆ«ä¸å°äºbè¿ç®—ç¬¦æ—¶ï¼Œaè¿ç®—ç¬¦å¼¹å‡ºï¼Œæ–°çš„æ ˆé¡¶è¿ç®—ç¬¦ä¼šç»§ç»­
-     * å’Œbè¿ç®—ç¬¦ä¼˜å…ˆçº§è¿›è¡Œæ¯”è¾ƒï¼Œå½“å°äºæ—¶å€™ï¼Œbè¿ç®—ç¬¦å…¥æ ˆï¼‰
+     * ÓÅÏÈ¼¶±ğ¶Ô±È £¨µ±aÔËËã·ûÓÅÏÈ¼¶±ğ²»Ğ¡ÓÚbÔËËã·ûÊ±£¬aÔËËã·ûµ¯³ö£¬ĞÂµÄÕ»¶¥ÔËËã·û»á¼ÌĞø
+     * ºÍbÔËËã·ûÓÅÏÈ¼¶½øĞĞ±È½Ï£¬µ±Ğ¡ÓÚÊ±ºò£¬bÔËËã·ûÈëÕ»£©
      *
-     * @param a æ ˆé¡¶è¿ç®—ç¬¦
-     * @param b éœ€è¦å¯¹æ¯”çš„è¿ç®—ç¬¦
-     * @return true :æ ˆé¡¶è¿ç®—ç¬¦å¼¹å‡º  false ï¼šbå…¥ç¬¦å·æ ˆ
+     * @param a Õ»¶¥ÔËËã·û
+     * @param b ĞèÒª¶Ô±ÈµÄÔËËã·û
+     * @return true :Õ»¶¥ÔËËã·ûµ¯³ö  false £ºbÈë·ûºÅÕ»
      */
     private boolean priorityCompare(char a, char b) {
         if (hasLeft) {
@@ -154,6 +154,7 @@ public class ReversePolishImpl {
             }
 
             if (a == '(') {
+                hasLeft = true;
                 return false;
             }
         }
