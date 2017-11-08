@@ -15,6 +15,7 @@ public class ReversePolishImpl {
     private Stack<Object> resultStack = new Stack<>();
     private boolean isComplete;//是否是一个完整的括号
     private String operator = "+-*/()";
+    private int count = 1;
 
     public void init() {
 //        Scanner scanner = new Scanner(System.in);
@@ -28,9 +29,9 @@ public class ReversePolishImpl {
 //        }
 //        toPolishDate("3+5*2-(8-3)*2/4");
 //        toPolishDate("8-2*3+(8-2)*5/6");
-//        String resultData = beforeData("-3+(-12-5)*6/3");
+        String resultData = beforeData("-3+(-12-5+10*2-8)*6/3");
 //        String resultData = beforeData("1+((2+3)*4)-5");
-        String resultData = beforeData("8-2*3+(89-2)*5/6");
+//        String resultData = beforeData("8-2*3+(89-2)*5/6");
         System.out.println("中缀表达式:" + resultData);
         toPolishDate(resultData);
     }
@@ -75,7 +76,7 @@ public class ReversePolishImpl {
                 } else {
                     sb.append(c);
                 }
-            } else if (operator.indexOf(c) > 0) {
+            } else if (operator.indexOf(c) != -1) {
                 if (sb.length() > 0) {
                     resultStack.push(sb.toString());//解决非整数和多位数问题
                     sb = new StringBuffer();
@@ -91,8 +92,9 @@ public class ReversePolishImpl {
                     }
                     if (isComplete) {
                         //出现一个完整的括号
-                        while (isAdd && charStack.peek() != '(') {
+                        while (/*isAdd &&*/ charStack.peek() != '(') {
                             resultStack.push(charStack.pop());
+//                            isAdd = !charStack.isEmpty();
                         }
                         charStack.pop();//去掉符号栈里面的'('
                         isComplete = false;
@@ -103,6 +105,9 @@ public class ReversePolishImpl {
                 }
             } else {
                 System.out.println("输入的字符不符合要求");
+                resultStack.clear();
+                charStack.clear();
+                return;
             }
         }
         System.out.println("charStack: " + charStack);
@@ -128,8 +133,17 @@ public class ReversePolishImpl {
     private boolean priorityCompare(char a, char b) {
         if (hasLeft) {
             if (b != ')') {
-                return false;
+                if (count > 1) {
+                    //当括号里面的运算符大于一个的时候
+                    hasLeft = false;
+                    return priorityCompare(a,b);
+//                    return true;
+                } else {
+                    count++;
+                    return false;
+                }
             } else {
+                count = 1;
                 isComplete = true;
                 hasLeft = false;
                 return false;
@@ -153,7 +167,7 @@ public class ReversePolishImpl {
                 return true;
             }
 
-            if (a == '(') {
+            if (a == '(') {//栈顶为左括号，b元素直接入栈
                 hasLeft = true;
                 return false;
             }
