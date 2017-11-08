@@ -16,7 +16,7 @@ public class ReversePolishImpl {
     private static String operator = "+-*/()";
     private static int count = 1;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         String resultData = beforeData("-3+(-12-5+10*2-8)*6/3");
         System.out.println("中缀表达式:" + resultData);
         toPolishDate(resultData);
@@ -56,7 +56,7 @@ public class ReversePolishImpl {
             c = input.charAt(i);
             if (Character.isDigit(c) || c == '.') {
                 if (i == length - 1) {
-                    //最后以为字符位数字的情况
+                    //最后以字符为数字的情况
                     resultStack.push(c);
                     sb.reverse();
                 } else {
@@ -89,14 +89,14 @@ public class ReversePolishImpl {
                     isAdd = !charStack.isEmpty();
                 }
             } else {
-                System.out.println("输入的字符不符合要求");
+                System.out.println("输入的计算公式不符合要求");
                 resultStack.clear();
                 charStack.clear();
                 return;
             }
         }
         while (!charStack.isEmpty()) {
-            //最后把符号栈里面的元素依次弹出
+            //最后把符号栈里面的元素依次弹出,并加到结果栈里面
             resultStack.push(charStack.pop());
         }
         System.out.println("resultStack: " + resultStack);
@@ -169,7 +169,7 @@ public class ReversePolishImpl {
         Stack<Double> data = new Stack<>();
         Double number1, number2, temp;
         for (int i = 0; i < resultStack.size(); i++) {
-            String object = String.valueOf(resultStack.get(i)) ;
+            String object = String.valueOf(resultStack.get(i));
             if (operator.indexOf(object) >= 0) {
                 number2 = data.pop();
                 number1 = data.pop();
