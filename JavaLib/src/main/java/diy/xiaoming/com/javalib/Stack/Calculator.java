@@ -195,7 +195,7 @@ public class Calculator {
 //        }
         double result = 0;
         try {
-            result = Calculator2("1+((2+3)*4)-5");
+            result = Calculator2("8-(4+3-6+2.5)*4");
         } catch (Exception e) {
             e.printStackTrace();
         }

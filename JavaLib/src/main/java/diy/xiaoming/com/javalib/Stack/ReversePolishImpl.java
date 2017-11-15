@@ -17,7 +17,7 @@ public class ReversePolishImpl {
     private static int count = 1;
 
     public static void main(String[] args) {
-        String resultData = beforeData("-3+(-12-5+10*2-8)*6/3");
+        String resultData = beforeData("8-(4+3-6+2.5)*4");
         System.out.println("中缀表达式:" + resultData);
         toPolishDate(resultData);
     }
