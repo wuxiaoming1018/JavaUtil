@@ -42,8 +42,8 @@ public class BinaryTree {
     }
 
     /**
-     * 前序遍历递归写法
-     * 中 左 右
+     * ?????????д??
+     * ?? ?? ??
      *
      * @param node
      */
@@ -56,7 +56,7 @@ public class BinaryTree {
     }
 
     /**
-     * 前序遍历非递归实现
+     * ?????????????
      *
      * @param node
      */
@@ -79,7 +79,7 @@ public class BinaryTree {
     }
 
     /**
-     * 中序遍历递归实现
+     * ?????????????
      *
      * @param node
      */
@@ -93,7 +93,7 @@ public class BinaryTree {
     }
 
     /**
-     * 中序遍历非递归实现
+     * ??????????????
      *
      * @param node
      */
@@ -125,7 +125,7 @@ public class BinaryTree {
     }
 
     /**
-     * 后序遍历递归实现
+     * ?????????????
      *
      * @param node
      */
@@ -178,22 +178,22 @@ public class BinaryTree {
         BinaryTree binaryTree = new BinaryTree("A");
         binaryTree.createTree(binaryTree.getRoot());
         System.out.println("-------------------------------");
-        System.out.println("前序遍历递归写法");
+        System.out.println("?????????д??");
         binaryTree.preOrder(binaryTree.mRoot);
         System.out.println("-------------------------------");
-        System.out.println("前序遍历非递归写法");
+        System.out.println("??????????д??");
         binaryTree.preOrder2(binaryTree.mRoot);
         System.out.println("-------------------------------");
-        System.out.println("中序遍历递归写法");
+        System.out.println("??????????д??");
         binaryTree.middleOrder(binaryTree.mRoot);
         System.out.println("-------------------------------");
-        System.out.println("中序遍历非递归写法");
+        System.out.println("???????????д??");
         binaryTree.middleOrder2(binaryTree.mRoot);
         System.out.println("-------------------------------");
-        System.out.println("后序遍历递归写法");
+        System.out.println("??????????д??");
         binaryTree.nextOrder(binaryTree.mRoot);
         System.out.println("-------------------------------");
-        System.out.println("后序遍历非递归写法");
+        System.out.println("???????????д??");
         binaryTree.nextOrder2(binaryTree.mRoot);
         System.out.println("-------------------------------");
     }

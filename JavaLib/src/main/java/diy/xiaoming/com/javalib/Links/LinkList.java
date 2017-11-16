@@ -35,7 +35,7 @@ public class LinkList {
     }
 
     /**
-     * é“¾è¡¨çš„å°¾ç«¯æœ€åä¸€ä¸ªé“¾ç»“ç‚¹ï¼Œå®ƒçš„nextå­—æ®µä¸ºnull
+     * Á´±íµÄÎ²¶Ë×îºóÒ»¸öÁ´½áµã£¬ËüµÄnext×Ö¶ÎÎªnull
      */
     public void displayList() {
         System.out.println("List (first-->last:)");
@@ -47,7 +47,7 @@ public class LinkList {
     }
 
     /**
-     * æ ¹æ®å…³é”®å­—æŸ¥æ‰¾é“¾è¡¨
+     * ¸ù¾İ¹Ø¼ü×Ö²éÕÒÁ´±í
      *
      * @param key
      * @return
@@ -65,7 +65,7 @@ public class LinkList {
     }
 
     /**
-     * æ ¹æ®å…³é”®å­—åˆ é™¤é“¾è¡¨
+     * ¸ù¾İ¹Ø¼ü×ÖÉ¾³ıÁ´±í
      * @param key
      * @return
      */
