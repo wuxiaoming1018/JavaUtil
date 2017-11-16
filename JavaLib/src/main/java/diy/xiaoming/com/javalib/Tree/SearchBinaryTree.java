@@ -79,6 +79,10 @@ public class SearchBinaryTree {
         return null;
     }
 
+    /**
+     * 删除节点
+     * @param node
+     */
     private void delNode(Node node) {
         if (node == null) {
             throw new NoSuchElementException();
@@ -152,6 +156,11 @@ public class SearchBinaryTree {
 
     }
 
+    /**
+     * 获取最左子树
+     * @param node 根节点
+     * @return
+     */
     private Node getMinLeftNode(Node node) {
         Node curNode = node;
         if (node == null) {
