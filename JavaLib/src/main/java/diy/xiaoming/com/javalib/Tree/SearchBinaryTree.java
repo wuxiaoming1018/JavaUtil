@@ -3,6 +3,7 @@ package diy.xiaoming.com.javalib.Tree;
 import java.util.NoSuchElementException;
 
 /**
+ * äºŒå‰æ’åºæ ‘
  * Created by Administrator on 2017-11-15.
  */
 
@@ -14,9 +15,9 @@ public class SearchBinaryTree {
     }
 
     /**
-     * Ìí¼Ó½Úµã
+     * æ·»åŠ èŠ‚ç‚¹
      *
-     * @param data ÒªÌí¼ÓµÄ½ÚµãÖµ
+     * @param data éœ€è¦æ·»åŠ èŠ‚ç‚¹çš„å€¼
      */
     public void insert(int data) {
         if (mRoot == null) {
@@ -31,7 +32,7 @@ public class SearchBinaryTree {
             } else if (nowNode.data < data) {
                 nowNode = nowNode.right;
             } else {
-                System.out.println("ÄúËùÊäÈëµÄÔªËØ:" + data + "ÓĞÖØ¸´");
+                System.out.println("æ‚¨è¾“å…¥çš„å…ƒç´ :" + data + "æœ‰é‡å¤");
                 throw new RuntimeException("this element: " + data + " you input has repeated");
             }
         }
@@ -45,7 +46,7 @@ public class SearchBinaryTree {
     }
 
     /**
-     * ÖĞĞò±éÀúµİ¹éÊµÏÖ
+     * ä¸­åºéå†é€’å½’å®ç°
      *
      * @param node
      */
@@ -59,7 +60,7 @@ public class SearchBinaryTree {
     }
 
     /**
-     * ²éÕÒ½Úµã
+     * æŸ¥æ‰¾èŠ‚ç‚¹
      *
      * @param date
      * @return
@@ -80,16 +81,16 @@ public class SearchBinaryTree {
     }
 
     /**
-     * É¾³ı½Úµã
+     * åˆ é™¤èŠ‚ç‚¹
      * @param node
      */
     private void delNode(Node node) {
         if (node == null) {
             throw new NoSuchElementException();
         } else {
-            Node parent = node.parent;//»ñµÃÉ¾³ı½ÚµãµÄË«Ç×½Úµã
+            Node parent = node.parent;//è·å¾—åˆ é™¤èŠ‚ç‚¹çš„åŒäº²èŠ‚ç‚¹
             if (node.left == null && node.right == null) {
-                //1¡¢µ±É¾³ıµÄ½ÚµãÊÇÒ¶×Ó½ÚµãµÄÊ±ºò
+                //1ã€åˆ é™¤çš„èŠ‚ç‚¹æ˜¯å¶å­ç»“ç‚¹
                 if (parent == null) {
                     mRoot = null;
                 } else {
@@ -99,9 +100,9 @@ public class SearchBinaryTree {
                         parent.left = null;
                     }
                 }
-                node.parent = null;//°ÑĞèÒªÉ¾³ıµÄ½ÚµãºÍËûµÄ¸¸½Úµã¶Ï¿ª
+                node.parent = null;//æŠŠéœ€è¦åˆ é™¤çš„èŠ‚ç‚¹å’Œå®ƒçš„åŒäº²èŠ‚ç‚¹æ–­å¼€
             } else if (node.left != null && node.right == null) {
-                //2¡¢Ö»ÓĞ×ó×ÓÊ÷
+                //2ã€åªæœ‰å·¦å­æ ‘
                 if (parent == null) {
                     node.left.parent = null;
                     mRoot = node.left;
@@ -114,6 +115,7 @@ public class SearchBinaryTree {
                 }
                 node.parent = null;
             } else if (node.left == null && node.right != null) {
+                //3ã€åªæœ‰å³å­æ ‘
                 if (parent == null) {
                     node.right.parent = null;
                     mRoot = node.right;
@@ -126,9 +128,9 @@ public class SearchBinaryTree {
                 }
                 node.parent = null;
             } else {
-                //4¡¢ÓĞ×óÓÒ×ÓÊ÷
+                //4æœ‰å·¦å³å­æ ‘
                 if (node.right.left == null) {
-                    //a¡¢É¾³ı½ÚµãµÄÓÒ×ÓÊ÷µÄ×ó×ÓÊ÷ÊÇ·ñÎª¿Õ£¬Èç¹ûÎª¿Õ£¬Ôò°ÑÒªÉ¾³ı½ÚµãµÄ×ó×ÓÊ÷ÉèÎªÉ¾³ıµãµÄÓÒ×ÓÊ÷µÄ×ó×ÓÊ÷
+                    //aã€åˆ é™¤èŠ‚ç‚¹çš„å³å­æ ‘çš„å·¦å­æ ‘æ˜¯å¦ä¸ºç©ºï¼Œå¦‚æœä¸ºç©ºï¼Œåˆ™æŠŠè¦åˆ é™¤èŠ‚ç‚¹çš„å·¦å­æ ‘è®¾ä¸ºåˆ é™¤ç‚¹çš„å³å­æ ‘çš„å·¦å­æ ‘
                     if (parent == null) {
                         mRoot = node.right;
                     }else{
@@ -140,7 +142,7 @@ public class SearchBinaryTree {
                     }
                     node.parent = null;
                 }else{
-                    //b¡¢²»Îª¿Õ£¬ÔòÊ¹ÓÃµ½×î×ó×ÓÊ÷
+                    //bã€ä¸ä¸ºç©ºï¼Œåˆ™ä½¿ç”¨åˆ°æœ€å·¦å­æ ‘
                     Node leftNode = getMinLeftNode(node.right);
                     leftNode.left = node.left;
                     leftNode.parent.left = leftNode.right;
@@ -157,8 +159,8 @@ public class SearchBinaryTree {
     }
 
     /**
-     * »ñÈ¡×î×ó×ÓÊ÷
-     * @param node ¸ù½Úµã
+     * è·å–æœ€å³å­æ ‘
+     * @param node æ ¹èŠ‚ç‚¹
      * @return
      */
     private Node getMinLeftNode(Node node) {
@@ -190,19 +192,19 @@ public class SearchBinaryTree {
     public static void main(String[] args) {
         int[] arrys = {20, 10, 6, 4, 2, 7, 89, 9, 30, 15, 14};
         SearchBinaryTree tree = new SearchBinaryTree(arrys[0]);
-        System.out.println("ÅÅĞòÇ°:");
+        System.out.println("æ’åºå‰:");
         System.out.print(arrys[0] + " ");
         for (int i = 1; i < arrys.length; i++) {
             System.out.print(arrys[i] + " ");
             tree.insert(arrys[i]);
         }
         System.out.println();
-        System.out.println("ÅÅĞòºó:");
+        System.out.println("æ’åºå:");
         tree.middleOrder(tree.mRoot);
         System.out.println();
         Node result = tree.findNode(7);
         System.out.println(result == null ? null : result.data);
-        System.out.println("É¾³ıºó£º");
+        System.out.println("åˆ é™¤åï¼š");
         tree.delNode(result);
         tree.middleOrder(tree.mRoot);
     }

@@ -42,8 +42,8 @@ public class BinaryTree {
     }
 
     /**
-     * ?????????��??
-     * ?? ?? ??
+     * 前序遍历递归实现
+     * 中 左 右
      *
      * @param node
      */
@@ -56,7 +56,7 @@ public class BinaryTree {
     }
 
     /**
-     * ?????????????
+     * 前序遍历非递归实现
      *
      * @param node
      */
@@ -79,8 +79,9 @@ public class BinaryTree {
     }
 
     /**
-     * ?????????????
+     * 中序遍历递归实现
      *
+     * 左 中 右
      * @param node
      */
     public void middleOrder(Node node) {
@@ -93,7 +94,7 @@ public class BinaryTree {
     }
 
     /**
-     * ??????????????
+     * 中序遍历非递归实现
      *
      * @param node
      */
@@ -125,8 +126,9 @@ public class BinaryTree {
     }
 
     /**
-     * ?????????????
+     * 后序遍历递归实现
      *
+     * 左 右 中
      * @param node
      */
     public void nextOrder(Node node) {
@@ -138,6 +140,10 @@ public class BinaryTree {
         System.out.println(node.data);
     }
 
+    /**
+     * 后序遍历非递归实现
+     * @param node
+     */
     public void nextOrder2(Node node) {
         if (node == null) {
             return;
@@ -178,22 +184,22 @@ public class BinaryTree {
         BinaryTree binaryTree = new BinaryTree("A");
         binaryTree.createTree(binaryTree.getRoot());
         System.out.println("-------------------------------");
-        System.out.println("?????????��??");
+        System.out.println("前序遍历递归写法");
         binaryTree.preOrder(binaryTree.mRoot);
         System.out.println("-------------------------------");
-        System.out.println("??????????��??");
+        System.out.println("前序遍历非递归写法");
         binaryTree.preOrder2(binaryTree.mRoot);
         System.out.println("-------------------------------");
-        System.out.println("??????????��??");
+        System.out.println("中序遍历递归写法");
         binaryTree.middleOrder(binaryTree.mRoot);
         System.out.println("-------------------------------");
-        System.out.println("???????????��??");
+        System.out.println("中序遍历非递归写法");
         binaryTree.middleOrder2(binaryTree.mRoot);
         System.out.println("-------------------------------");
-        System.out.println("??????????��??");
+        System.out.println("后序遍历递归写法");
         binaryTree.nextOrder(binaryTree.mRoot);
         System.out.println("-------------------------------");
-        System.out.println("???????????��??");
+        System.out.println("后序遍历非递归写法");
         binaryTree.nextOrder2(binaryTree.mRoot);
         System.out.println("-------------------------------");
     }
