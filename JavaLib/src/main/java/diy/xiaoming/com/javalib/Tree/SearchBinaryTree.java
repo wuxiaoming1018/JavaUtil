@@ -1,5 +1,7 @@
 package diy.xiaoming.com.javalib.Tree;
 
+import java.util.NoSuchElementException;
+
 /**
  * Created by Administrator on 2017-11-15.
  */
@@ -33,11 +35,13 @@ public class SearchBinaryTree {
                 throw new RuntimeException("this element: " + data + " you input has repeated");
             }
         }
+        Node curNode = new Node(data);
         if (newParent.data > data) {
-            newParent.left = new Node(data);
+            newParent.left = curNode;
         } else {
-            newParent.right = new Node(data);
+            newParent.right = curNode;
         }
+        curNode.parent = newParent;
     }
 
     /**
@@ -54,6 +58,12 @@ public class SearchBinaryTree {
         middleOrder(node.right);
     }
 
+    /**
+     * 查找节点
+     *
+     * @param date
+     * @return
+     */
     public Node findNode(int date) {
         Node node = mRoot;
         while (node != null) {
@@ -67,6 +77,91 @@ public class SearchBinaryTree {
             }
         }
         return null;
+    }
+
+    private void delNode(Node node) {
+        if (node == null) {
+            throw new NoSuchElementException();
+        } else {
+            Node parent = node.parent;//获得删除节点的双亲节点
+            if (node.left == null && node.right == null) {
+                //1、当删除的节点是叶子节点的时候
+                if (parent == null) {
+                    mRoot = null;
+                } else {
+                    if (parent.right == node) {
+                        parent.right = null;
+                    } else if (parent.left == node) {
+                        parent.left = null;
+                    }
+                }
+                node.parent = null;//把需要删除的节点和他的父节点断开
+            } else if (node.left != null && node.right == null) {
+                //2、只有左子树
+                if (parent == null) {
+                    node.left.parent = null;
+                    mRoot = node.left;
+                } else {
+                    if (parent.left == node) {
+                        parent.left = node.left;
+                    } else if (parent.right == node) {
+                        parent.right = node.left;
+                    }
+                }
+                node.parent = null;
+            } else if (node.left == null && node.right != null) {
+                if (parent == null) {
+                    node.right.parent = null;
+                    mRoot = node.right;
+                } else {
+                    if (parent.left == node) {
+                        parent.left = node.right;
+                    } else if (parent.right == node) {
+                        parent.right = node.right;
+                    }
+                }
+                node.parent = null;
+            } else {
+                //4、有左右子树
+                if (node.right.left == null) {
+                    //a、删除节点的右子树的左子树是否为空，如果为空，则把要删除节点的左子树设为删除点的右子树的左子树
+                    if (parent == null) {
+                        mRoot = node.right;
+                    }else{
+                        if (parent.left==node) {
+                            parent.left = node.right;
+                        }else{
+                            parent.right = node.right;
+                        }
+                    }
+                    node.parent = null;
+                }else{
+                    //b、不为空，则使用到最左子树
+                    Node leftNode = getMinLeftNode(node.right);
+                    leftNode.left = node.left;
+                    leftNode.parent.left = leftNode.right;
+                    leftNode.right = node.right;
+                    if (parent == null) {
+                        mRoot=leftNode;
+                    }else{
+                        parent.right = leftNode;
+                    }
+                }
+            }
+        }
+
+    }
+
+    private Node getMinLeftNode(Node node) {
+        Node curNode = node;
+        if (node == null) {
+            return null;
+        }else{
+            while (curNode.left != null) {
+                curNode = curNode.left;
+            }
+        }
+        return curNode;
     }
 
     private class Node {
@@ -96,7 +191,10 @@ public class SearchBinaryTree {
         System.out.println("排序后:");
         tree.middleOrder(tree.mRoot);
         System.out.println();
-        Node result = tree.findNode(30);
+        Node result = tree.findNode(7);
         System.out.println(result == null ? null : result.data);
+        System.out.println("删除后：");
+        tree.delNode(result);
+        tree.middleOrder(tree.mRoot);
     }
 }
