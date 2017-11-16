@@ -34,7 +34,7 @@ public class Calculator {
     /***
      * 0 优先级相等 ； -1 op1 优先级大于op2； 1 op2 优先级大于 op1
      */
-    public static int opcompare(char op1, char op2) {
+    public static int compare(char op1, char op2) {
         if (op1 == '(') { // 遇到括号 就直接入栈 所以 op2 大
             return 1;
         }
@@ -100,7 +100,7 @@ public class Calculator {
                         } else {
                             while (stack.size() > 0) {
                                 char op1 = stack.lastElement();
-                                int com = opcompare(op1, c);
+                                int com = compare(op1, c);
                                 if (com <= 0) {
                                     polish.offer(String.valueOf(stack.pop()));
                                 } else {

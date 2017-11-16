@@ -3,7 +3,7 @@ package diy.xiaoming.com.javalib.Stack;
 import java.util.Stack;
 
 /**
- * ??????????????????????
+ * 逆波兰表达式实现
  * Created by Administrator on 2017-11-07.
  */
 
@@ -18,14 +18,14 @@ public class ReversePolishImpl {
 
     public static void main(String[] args) {
         String resultData = beforeData("8-(4+3-6+2.5)*4");
-        System.out.println("��׺����ʽ:" + resultData);
+        System.out.println("中缀表达式:" + resultData);
         toPolishDate(resultData);
     }
 
     /**
-     * ?????????????
-     * -???????????????????????????��???????????????????-????0
-     * -5-(-8-1)????? 0-5-(0-8-1)
+     * 数据处理
+     * -号在最左边或者在(的右边则当成是负号，需要在前面加0
+     * -5-(-8-1)处理为： 0-5-(0-8-1)
      *
      * @param before
      * @return
@@ -56,7 +56,7 @@ public class ReversePolishImpl {
             c = input.charAt(i);
             if (Character.isDigit(c) || c == '.') {
                 if (i == length - 1) {
-                    //?????????????????
+                    //把最后一位数字入栈
                     resultStack.push(c);
                     sb.reverse();
                 } else {
@@ -64,7 +64,7 @@ public class ReversePolishImpl {
                 }
             } else if (operator.indexOf(c) != -1) {
                 if (sb.length() > 0) {
-                    resultStack.push(sb.toString());//���С������λ�����
+                    resultStack.push(sb.toString());//解决小数，多位数情况
                     sb = new StringBuffer();
                 }
                 if (charStack.isEmpty()) {
@@ -72,16 +72,16 @@ public class ReversePolishImpl {
                 } else {
                     if (!charStack.isEmpty()) {
                         while (isAdd && priorityCompare(charStack.peek(), c)) {
-                            resultStack.push(charStack.pop());//pop()ȡ��ջ��Ԫ�ز�ɾ��
+                            resultStack.push(charStack.pop());//pop()取出栈顶元素并删除
                             isAdd = !charStack.isEmpty();
                         }
                     }
                     if (isComplete) {
-                        //һ������С����
+                        //一个完整小括号
                         while (charStack.peek() != '(') {
                             resultStack.push(charStack.pop());
                         }
-                        charStack.pop();//?????????????'('
+                        charStack.pop();//去除左括号'('
                         isComplete = false;
                     } else {
                         charStack.push(c);
@@ -89,43 +89,43 @@ public class ReversePolishImpl {
                     isAdd = !charStack.isEmpty();
                 }
             } else {
-                System.out.println("??????????????????");
+                System.out.println("您输入的计算公式有问题，请重新输入");
                 resultStack.clear();
                 charStack.clear();
                 return;
             }
         }
         while (!charStack.isEmpty()) {
-            //���ε�������ջ����Ԫ��
+            //依次弹出符号栈里面元素
             resultStack.push(charStack.pop());
         }
         System.out.println("resultStack: " + resultStack);
-        System.out.print("???????:");
+        System.out.print("后缀(逆波兰)表达式:");
         for (int i = 0; i < resultStack.size(); i++) {
             System.out.print(resultStack.get(i) + " ");
         }
         System.out.println();
         try {
             double result = calculator(resultStack);
-            System.out.println("???????:" + result);
+            System.out.println("计算结果:" + result);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * ????????? ????a????????????��??b????????a???????????????????????????
-     * ??b?????????????��?????��?????b??????????
+     * 当符号栈栈顶符号的优先级别不小于需要入栈的运算符优先级别，则符号栈顶元素弹出，运算符入栈，否则运算符不入符号栈
      *
-     * @param a ????????
-     * @param b ????????????
-     * @return true :????????????  false ??b??????
+     *
+     * @param a 符号栈顶元素
+     * @param b 需要判断是否入栈的运算符
+     * @return true :a弹出  false ??b??????
      */
     private static boolean priorityCompare(char a, char b) {
         if (hasLeft) {
             if (b != ')') {
                 if (count > 1) {
-                    //????????????????????????????
+                    //括号里面的运算符号个数大于1的时候
                     hasLeft = false;
                     return priorityCompare(a, b);
                 } else {
@@ -185,13 +185,13 @@ public class ReversePolishImpl {
                         break;
                     case "/":
                         if (number2 == 0) {
-                            throw new RuntimeException("?????????????");
+                            throw new RuntimeException("被除数不能为0");
                         } else {
                             temp = number1 / number2;
                         }
                         break;
                     default:
-                        throw new Exception("???????:" + object + "��???");
+                        throw new Exception("您输入的运算符号:" + object + "未知");
                 }
                 data.push(temp);
             } else {
